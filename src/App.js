@@ -6,12 +6,13 @@ import TOCMail from './component/TOCMail';
 import ReadContents from './component/ReadContents';
 import Welcome from './component/Welcome';
 import Control from './component/Control';
+import CreateContents from './component/CreateContents';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'read',
+      mode: 'create-story',
       selected_content_id: 3,
       contents: [
         { id: 1, title: '물의 괴물의 습격', story: '숲 속에 있는 고양이 마을. 그곳에는 고양기 다섯 가족이 살고 있어요 그런데 그곳에 물괴물이 공격해 오는데...' },
@@ -45,11 +46,16 @@ class App extends Component {
           break;
         } i = i + 1;
       }
+    } else if (_mode === 'create-story') {
+      _article = <CreateContents></CreateContents>
     }
     return (
       <div className="wrap">
         <navigator>
-          <Subject title={this.state.subject.title}></Subject>
+          <Subject title={this.state.subject.title}
+            onChangeMode={function(){
+              this.setState({mode: 'welcome'});
+            }.bind(this)}></Subject>
           <TOCStory data={this.state.contents}
             onChagePage={function(id){
               this.setState({mode: 'read', selected_content_id: Number(id)});
@@ -59,7 +65,9 @@ class App extends Component {
         </navigator>
         <main>
           {_article}
-          <Control></Control>
+          <Control onChangeMode={function(){
+            this.setState({mode:'create-story'});
+          }.bind(this)}></Control>
         </main>
       </div>
     );
