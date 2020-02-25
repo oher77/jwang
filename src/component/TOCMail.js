@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 
 class TOCMail extends Component {
     render() {
+        var lists = [];
+        var i = 0;
+        var _data = this.props.data;
+        while (i < _data.length) {
+            lists.push(<li><a href="/ReadMail">{_data[i].title}</a></li>)
+            i = i + 1
+        }
         return (
             <section className="toc-mail">
                 <h2>편지함</h2>
+
+                <a className="bt-write-mail" href="/CreateMail"> 좡에게 메일쓰기</a>
+
                 <ul>
-                    <li>안녕? 나 영서야</li>
-                    <li>마녀에 관심이 많니?</li>
-                    <li>엄마에게서 온 편지 입니다.</li>
+                    {lists}
                 </ul>
             </section>
         );

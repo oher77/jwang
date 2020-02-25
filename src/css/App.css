@@ -22,6 +22,9 @@
     margin: 0;
     letter-spacing: -0.05em;
 }
+p {
+    color: #889081;
+}
 h1 {
     font-size: 4em;
     font-weight: 500;
@@ -57,6 +60,9 @@ main {
 /* //Layout */
 
 /* Design */
+.welcome-contents p {
+    color: #6b6f67;
+}
 .toc-story, .toc-mail {
     background-color: #5bb92c;
     border-radius: 10px;
@@ -84,10 +90,15 @@ main {
     padding: 24px;
 }
 .contents {
-
+    min-height: 300px;
 }
 .story-bg {
     background-color: #fff;
+    border-radius: 10px;
+    padding: 20px 24px;     
+}
+.welcome-bg {
+    background-color: #e1f5c5;
     border-radius: 10px;
     padding: 20px 24px;     
 }
@@ -100,14 +111,18 @@ h3.title-story{
     margin-bottom: 12px;
     color: #94790f;
 }
-.button-list {
-    display: flex;
-    justify-content: center;
+h3.title-welcome{
+    font-size: 2.75em;
+    font-weight: 550;
+    margin-bottom: 12px;
+    color: #66b222;
+    text-align: center;
 }
-.button-list ul {
+ul.button-list {
     display: flex;
     flex-direction: row;
     list-style: none;
+    justify-content: center;
 }
 .button-list li {
     padding: 8px 20px 10px;
@@ -122,4 +137,15 @@ h3.title-story{
 }
 .control {
     margin-top: 16px;
+}
+.bt-write-mail {
+    margin: 8px 0;
+    background-color: rgba(255,255,255,.1);
+    color: #fff;
+    padding: 8px 8px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 246, 114, 0.445);
+    display: inline-block;
+    text-align: center;
 }
