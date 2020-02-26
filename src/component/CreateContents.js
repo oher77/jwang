@@ -14,7 +14,7 @@ class CreateContents extends Component {
                         <input name="title" type="text"></input>
                         <textarea name="story" type="textarea"></textarea>
                     </section>
-                    <section className="page">
+                    <section className="buttons-item create">
                         <ul className="form-button-list">
                            <li><button type="submit">취소</button></li>
                            <li><button type="submit">저장</button></li>

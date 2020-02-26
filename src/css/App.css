@@ -113,6 +113,10 @@ main {
 .contents.create textarea {
     flex: 0 1 100%;
     margin-top: 8px;
+    min-height: 276px;
+}
+.buttons-item.create {
+    margin-top: 16px;
 }
 .story-bg {
     background-color: #fff;

@@ -11,6 +11,7 @@ import CreateContents from './component/CreateContents';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.max_content_id= 3;
     this.state = {
       mode: 'create-story',
       selected_content_id: 3,
@@ -49,7 +50,7 @@ class App extends Component {
     } else if (_mode === 'create-story') {
       _article = <CreateContents onSubmit={
         function(_title, _story){
-          var _max_content_id = 3;
+          var _max_content_id = this.max_content_id;
           _max_content_id =  _max_content_id +1;
           var _contents = Array.from(this.state.contents);
           _contents.push({id:_max_content_id, title:_title, story:_story});
