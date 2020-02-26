@@ -47,7 +47,18 @@ class App extends Component {
         } i = i + 1;
       }
     } else if (_mode === 'create-story') {
-      _article = <CreateContents></CreateContents>
+      _article = <CreateContents onSubmit={
+        function(_title, _story){
+          var _max_content_id = 3;
+          _max_content_id =  _max_content_id +1;
+          var _contents = Array.from(this.state.contents);
+          _contents.push({id:_max_content_id, title:_title, story:_story});
+          this.setState({contents: _contents});
+        console.log(_max_content_id);
+          this.setState({mode: 'read'});
+          this.setState({selected_content_id: _max_content_id})
+        }.bind(this)
+      }></CreateContents>
     }
     return (
       <div className="wrap">

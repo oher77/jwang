@@ -7,7 +7,7 @@ class TOCStory extends Component {
         var i = 0;
         while(i < _data.length){
             lists.push(
-            <li>
+            <li key={_data[i].id}>
                 <a id={_data[i].id} href={"/ReadContents" + _data[i].title}
                     onClick={function(e){
                         e.preventDefault();

@@ -39,6 +39,19 @@ a {
     color: inherit;
 }
 
+/* Component  */
+input, textarea {
+    font-size: 1.1em;
+    padding-left: 8px;
+}
+input{
+    height: 32px;
+}
+
+textarea {
+    min-height: 240px;
+}
+
 /* Layout */
 .wrap {
     display: flex;
@@ -92,6 +105,15 @@ main {
 .contents {
     min-height: 300px;
 }
+.contents.create {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.contents.create textarea {
+    flex: 0 1 100%;
+    margin-top: 8px;
+}
 .story-bg {
     background-color: #fff;
     border-radius: 10px;
@@ -129,7 +151,7 @@ ul.button-list {
     background-color: #0cad00;
     margin-left: 8px;
     color: #fff;
-    border-radius: 10px;
+    border-radius: 20px;
     font-size: 1.2em;
 }
 .page {
@@ -138,6 +160,25 @@ ul.button-list {
 .control {
     margin-top: 16px;
 }
+
+.form-button-list {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    justify-content: center;  
+}
+.form-button-list li {
+    margin-left: 8px;
+}
+.form-button-list button {
+    padding: 8px 20px 10px;
+    background-color: #0cad00;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 1.2em;
+    border: none;
+}
+
 .bt-write-mail {
     margin: 8px 0;
     background-color: rgba(255,255,255,.1);

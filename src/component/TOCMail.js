@@ -6,7 +6,7 @@ class TOCMail extends Component {
         var i = 0;
         var _data = this.props.data;
         while (i < _data.length) {
-            lists.push(<li><a href="/ReadMail">{_data[i].title}</a></li>)
+            lists.push(<li key={_data[i].id}><a href="/ReadMail">{_data[i].title}</a></li>)
             i = i + 1
         }
         return (

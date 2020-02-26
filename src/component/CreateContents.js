@@ -2,19 +2,25 @@ import React, { Component } from 'react';
 
 class CreateContents extends Component {
     render() {
-        var data= this.props.data;
+        
         return (
             <div className="create-contents story-bg">
-                <section className="contents">
-                    <input type="text"></input>
-                    <textarea></textarea>
-                </section>
-                <section className="page">
-                    <ul className="button-list">
-                        <a href="/"><li>취소</li></a>
-                        <a href="/"><li>저장</li></a>
-                    </ul>
-                </section>
+                <form onSubmit={
+                    function(e) {
+                        e.preventDefault();
+                        this.props.onSubmit(e.target.title.value, e.target.story.value);
+                    }.bind(this)}>
+                    <section className="contents create">
+                        <input name="title" type="text"></input>
+                        <textarea name="story" type="textarea"></textarea>
+                    </section>
+                    <section className="page">
+                        <ul className="form-button-list">
+                           <li><button type="submit">취소</button></li>
+                           <li><button type="submit">저장</button></li>
+                        </ul>
+                    </section>
+                </form>
             </div>
 
         );
