@@ -13,6 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.max_content_id = 3;
+    this.max_mail_id = 3;
     this.state = {
       mode: 'create-mail',
       selected_content_id: 3,
@@ -48,20 +49,20 @@ class App extends Component {
         var _data = this.state.contents[i];
         if (_data.id === _selected_content_id) {
           _article = <ReadContents data={_data}
-          PrevContent={function(id){
-            if(id > 0){
-              this.setState({selected_content_id: id});
-            }
-          }.bind(this)}
-          NextContent = {function(id){
-            if(id < Number(this.max_content_id) +1 ) {
-              this.setState({selected_content_id: id})
-            }
-          }.bind(this)}
+            PrevContent={function (id) {
+              if (id > 0) {
+                this.setState({ selected_content_id: id });
+              }
+            }.bind(this)}
+            NextContent={function (id) {
+              if (id < Number(this.max_content_id) + 1) {
+                this.setState({ selected_content_id: id })
+              }
+            }.bind(this)}
 
-          onChangeMode={function () {
-            this.setState({ mode: 'create-story' });
-          }.bind(this)}
+            onChangeMode={function () {
+              this.setState({ mode: 'create-story' });
+            }.bind(this)}
           ></ReadContents>
           break;
         } i = i + 1;
@@ -88,14 +89,27 @@ class App extends Component {
             this.setState({ mode: 'read' });
             this.setState({ selected_content_id: _max_content_id })
           }.bind(this)}
-          onCancel = {
-            function(){
-              this.setState({mode: 'read'});
-            }.bind(this)
-          }
-          ></CreateContents>
+        onCancel={
+          function () {
+            this.setState({ mode: 'read' });
+          }.bind(this)
+        }
+      ></CreateContents>
     } else if (_mode === 'create-mail') {
-      _article = <CreateMails></CreateMails>
+      _article =
+        <CreateMails
+          onSubmit={function(_title, _message){
+            var _max_mail_id = this.max_mail_id;
+            _max_mail_id = _max_mail_id + 1;
+            _mails = Array.from(this.state.mails);
+            _mails.push({id: _max_mail_id, title: _title, message: _message});
+            this.setState({mails : _mails, mode: 'read-mail', selected_mail_id: _max_mail_id});
+          }.bind(this)}
+          onCancel={function(){
+            this.setState({mode:'read-mail'});
+          }.bind(this)}
+          >
+        </CreateMails>
     }
     return (
       <div className="wrap">
@@ -111,7 +125,7 @@ class App extends Component {
           </TOCStory>
           <TOCMail data={this.state.mails}
             onChangeMode={function () {
-              this.setState({mode: 'create-mail'});
+              this.setState({ mode: 'create-mail' });
             }.bind(this)}
             onChangePage={function (id) {
               this.setState({ mode: 'read-mail', selected_mail_id: Number(id) });
