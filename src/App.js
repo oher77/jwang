@@ -4,17 +4,19 @@ import Subject from './component/Subject';
 import TOCStory from './component/TOCStory';
 import TOCMail from './component/TOCMail';
 import ReadContents from './component/ReadContents';
+import ReadMails from './component/ReadMails';
 import Welcome from './component/Welcome';
-import Control from './component/Control';
 import CreateContents from './component/CreateContents';
+import CreateMails from './component/CreateMails';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.max_content_id= 3;
+    this.max_content_id = 3;
     this.state = {
-      mode: 'create-story',
+      mode: 'create-mail',
       selected_content_id: 3,
+      selected_mail_id: 2,
       contents: [
         { id: 1, title: '물의 괴물의 습격', story: '숲 속에 있는 고양이 마을. 그곳에는 고양기 다섯 가족이 살고 있어요 그런데 그곳에 물괴물이 공격해 오는데...' },
         { id: 2, title: '티글리와 기글리', story: '티글리와 기글리는 남매예요. 둘은 매일매일 재미있는 사건을 꾸며서 부모님을 놀라게 하죠. 오늘은 어떤 사건을 만들어서 부모님이 한숨을 쉬게 만들까요. 그래도 키클리 기글리의 부모님은 사랑스런 남매를 크게 꾸짖지 않으신답니다. 그저 엉덩이 100대와 윗몸일으키기 100번 앉았다 일어서기 100번 오리 걸음 100번 팔 굽혀 펴기 100번과 같은 사랑의 체벌만이 있을 뿐이예요.' },
@@ -32,8 +34,10 @@ class App extends Component {
   render() {
     var _mode = this.state.mode;
     var _selected_content_id = this.state.selected_content_id;
+    var _selected_mail_id = this.state.selected_mail_id;
     var _article = null;
     var _contents = this.state.contents;
+    var _mails = this.state.mails;
     if (_mode === 'welcome') {
       var _title = this.state.welcome.title;
       var _desc = this.state.welcome.desc;
@@ -43,43 +47,79 @@ class App extends Component {
       while (i < _contents.length) {
         var _data = this.state.contents[i];
         if (_data.id === _selected_content_id) {
-          _article = <ReadContents data={_data}></ReadContents>
+          _article = <ReadContents data={_data}
+          PrevContent={function(id){
+            if(id > 0){
+              this.setState({selected_content_id: id});
+            }
+          }.bind(this)}
+          NextContent = {function(id){
+            if(id < Number(this.max_content_id) +1 ) {
+              this.setState({selected_content_id: id})
+            }
+          }.bind(this)}
+
+          onChangeMode={function () {
+            this.setState({ mode: 'create-story' });
+          }.bind(this)}
+          ></ReadContents>
           break;
         } i = i + 1;
       }
+    } else if (_mode === 'read-mail') {
+      var n = 0;
+      while (n < _mails.length) {
+        var mail_data = this.state.mails[n];
+        if (mail_data.id === _selected_mail_id) {
+          _article = <ReadMails data={mail_data}></ReadMails>
+          break;
+        } n = n + 1;
+      }
     } else if (_mode === 'create-story') {
-      _article = <CreateContents onSubmit={
-        function(_title, _story){
-          var _max_content_id = this.max_content_id;
-          _max_content_id =  _max_content_id +1;
-          var _contents = Array.from(this.state.contents);
-          _contents.push({id:_max_content_id, title:_title, story:_story});
-          this.setState({contents: _contents});
-        console.log(_max_content_id);
-          this.setState({mode: 'read'});
-          this.setState({selected_content_id: _max_content_id})
-        }.bind(this)
-      }></CreateContents>
+      _article = <CreateContents
+        onSubmit={
+          function (_title, _story) {
+            var _max_content_id = this.max_content_id;
+            _max_content_id = _max_content_id + 1;
+            var _contents = Array.from(this.state.contents);
+            _contents.push({ id: _max_content_id, title: _title, story: _story });
+            this.setState({ contents: _contents });
+            console.log(_max_content_id);
+            this.setState({ mode: 'read' });
+            this.setState({ selected_content_id: _max_content_id })
+          }.bind(this)}
+          onCancel = {
+            function(){
+              this.setState({mode: 'read'});
+            }.bind(this)
+          }
+          ></CreateContents>
+    } else if (_mode === 'create-mail') {
+      _article = <CreateMails></CreateMails>
     }
     return (
       <div className="wrap">
         <navigator>
           <Subject title={this.state.subject.title}
-            onChangeMode={function(){
-              this.setState({mode: 'welcome'});
+            onChangeMode={function () {
+              this.setState({ mode: 'welcome' });
             }.bind(this)}></Subject>
           <TOCStory data={this.state.contents}
-            onChagePage={function(id){
-              this.setState({mode: 'read', selected_content_id: Number(id)});
+            onChagePage={function (id) {
+              this.setState({ mode: 'read', selected_content_id: Number(id) });
             }.bind(this)}>
           </TOCStory>
-          <TOCMail data={this.state.mails}></TOCMail>
+          <TOCMail data={this.state.mails}
+            onChangeMode={function () {
+              this.setState({mode: 'create-mail'});
+            }.bind(this)}
+            onChangePage={function (id) {
+              this.setState({ mode: 'read-mail', selected_mail_id: Number(id) });
+            }.bind(this)}
+          ></TOCMail>
         </navigator>
         <main>
           {_article}
-          <Control onChangeMode={function(){
-            this.setState({mode:'create-story'});
-          }.bind(this)}></Control>
         </main>
       </div>
     );
