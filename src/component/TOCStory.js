@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
 class TOCStory extends Component {
+    shouldComponentUpdate(newProps) {
+        if(newProps.data === this.props.data) {
+            return false
+        }return true
+    }
     render() {
+        console.log('===>TOCStory Rendered')
         var lists = [];
         var _data = this.props.data;
         var i = 0;

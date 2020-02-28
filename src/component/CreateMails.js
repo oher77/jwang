@@ -11,8 +11,8 @@ class CreateMails extends Component {
                     this.props.onSubmit(e.target.title.value, e.target.message.value);
                 }.bind(this)}>
                     <section className="contents create">
-                        <input name="title" type="text"></input>
-                        <textarea name="message" type="textarea"></textarea>
+                        <input placeholder="제목" name="title" type="text"></input>
+                        <textarea placeholder="좡에게 편지를 써보아요" name="message" type="textarea"></textarea>
                     </section>
                     <section className="buttons-item create">
                         <ul className="form-button-list">
@@ -21,7 +21,7 @@ class CreateMails extends Component {
                                     e.preventDefault();
                                     this.props.onCancel();
                                 }.bind(this)}>취소</button></li>
-                            <li><button type="submit">저장</button></li>
+                            <li><button type="submit">좡에게 메일 보내기</button></li>
                         </ul>
                     </section>
                 </form>

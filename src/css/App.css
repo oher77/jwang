@@ -20,7 +20,9 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    letter-spacing: -0.05em;
+    /* letter-spacing: -0.05em; */
+    font-family: 'Noto Sans KR';
+    font-weight: normal;
 }
 p {
     color: #889081;
@@ -43,6 +45,8 @@ a {
 input, textarea {
     font-size: 1.1em;
     padding-left: 8px;
+    color: #777;
+    font-size: 14px;
 }
 input{
     height: 32px;
@@ -50,6 +54,11 @@ input{
 
 textarea {
     min-height: 240px;
+    padding-top: 8px;
+}
+
+input::placeholder, textarea::placeholder{
+    color: #aaaaaa;
 }
 
 /* Layout */
@@ -193,4 +202,7 @@ ul.button-list {
     border: 1px solid rgba(255, 246, 114, 0.445);
     display: inline-block;
     text-align: center;
+}
+.bt-write-mail span {
+    font-size: 1.2em;
 }

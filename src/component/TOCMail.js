@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
 class TOCMail extends Component {
+    shouldComponentUpdate(newProps) {
+        if(this.props.data === newProps.data){
+            return false
+        }return true
+    }
     render() {
+        console.log('====>TOCMail Redered')
         var lists = [];
         var i = 0;
         var _data = this.props.data;
@@ -27,7 +33,7 @@ class TOCMail extends Component {
                         e.preventDefault();
                         this.props.onChangeMode();
                     }.bind(this)}>
-                    좡에게 메일쓰기</a>
+                    <span>좡~</span>에게 메일쓰기</a>
 
                 <ul>
                     {lists}

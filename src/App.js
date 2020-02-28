@@ -8,6 +8,7 @@ import ReadMails from './component/ReadMails';
 import Welcome from './component/Welcome';
 import CreateContents from './component/CreateContents';
 import CreateMails from './component/CreateMails';
+import UpdateContents from './component/UpdateContents';
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class App extends Component {
     this.max_content_id = 3;
     this.max_mail_id = 3;
     this.state = {
-      mode: 'create-mail',
+      mode: 'update-story',
       selected_content_id: 3,
       selected_mail_id: 2,
       contents: [
@@ -32,6 +33,7 @@ class App extends Component {
       welcome: { title: '좡\'s 좡좡좡', desc: '안녕? 나는 좡이야. 나는 초록색을 좋아해. 그리고 하던 일을 멈추고 다른 일을 하는 것을 좋아해. 왜냐면 나는 내가 시작한 일이 마무리 되는 것이 너무 슬퍼. 내가 하던 일과 영 영 이별하는 느낌이야... 그래서 엄마한테 매일 혼나지. "또 중간에 딴 짓 한다!!!!" 샤워를 하고 나와서 옷을 입지 않고 티비를 본다던가... 바지를 한 쪽 가랭이만 입고 책을 읽는 다던가... 나는 미련이 많고 원하는 걸 잘 이야기 하지 못 해. 그래도 나는 내가 좋은 사람이라는 걸 알아. 그래서 내가 좋아. 그리고 나는 커서 멋진 사람이 될꺼야. 어떤 일을 아주 미루다 마감에 맞춰 그 미뤘던 에너지를 폭발 시킬 수 있는 그런 직업을 찾을 거야. 그런데 그런 일은 아마... 굉장히...자... 아니.. 슬... 음... 아니 아니야.' }
     }
   }
+
   render() {
     var _mode = this.state.mode;
     var _selected_content_id = this.state.selected_content_id;
@@ -60,8 +62,8 @@ class App extends Component {
               }
             }.bind(this)}
 
-            onChangeMode={function () {
-              this.setState({ mode: 'create-story' });
+            onChangeMode={function (m) {
+              this.setState({ mode: m });
             }.bind(this)}
           ></ReadContents>
           break;
@@ -80,14 +82,13 @@ class App extends Component {
       _article = <CreateContents
         onSubmit={
           function (_title, _story) {
-            var _max_content_id = this.max_content_id;
-            _max_content_id = _max_content_id + 1;
+            this.max_content_id = this.max_content_id + 1;
             var _contents = Array.from(this.state.contents);
-            _contents.push({ id: _max_content_id, title: _title, story: _story });
+            _contents.push({ id: this.max_content_id, title: _title, story: _story });
             this.setState({ contents: _contents });
-            console.log(_max_content_id);
+            console.log(this.max_content_id);
             this.setState({ mode: 'read' });
-            this.setState({ selected_content_id: _max_content_id })
+            this.setState({ selected_content_id: this.max_content_id })
           }.bind(this)}
         onCancel={
           function () {
@@ -98,18 +99,27 @@ class App extends Component {
     } else if (_mode === 'create-mail') {
       _article =
         <CreateMails
-          onSubmit={function(_title, _message){
-            var _max_mail_id = this.max_mail_id;
-            _max_mail_id = _max_mail_id + 1;
+          onSubmit={function (_title, _message) {
+            this.max_mail_id = this.max_mail_id+1;
             _mails = Array.from(this.state.mails);
-            _mails.push({id: _max_mail_id, title: _title, message: _message});
-            this.setState({mails : _mails, mode: 'read-mail', selected_mail_id: _max_mail_id});
+            _mails.push({ id:this.max_mail_id, title: _title, message: _message });
+            this.setState({ mails: _mails, mode: 'read-mail', selected_mail_id: this.max_mail_id });
           }.bind(this)}
-          onCancel={function(){
-            this.setState({mode:'read-mail'});
+          onCancel={function () {
+            this.setState({ mode: 'read-mail' });
           }.bind(this)}
-          >
+        >
         </CreateMails>
+    } else if (_mode === 'update-story'){
+      var update_data = this.state.contents[Number(_selected_content_id-1)]
+      _article = 
+      <UpdateContents data={update_data}
+         onSubmit = {function(_id, _title, _story){
+          console.log(_id, _title, _story)
+         }}
+      >
+
+      </UpdateContents>
     }
     return (
       <div className="wrap">
