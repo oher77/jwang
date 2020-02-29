@@ -16,7 +16,7 @@ class App extends Component {
     this.max_content_id = 3;
     this.max_mail_id = 3;
     this.state = {
-      mode: 'update-story',
+      mode: 'read',
       selected_content_id: 3,
       selected_mail_id: 2,
       contents: [
@@ -33,42 +33,59 @@ class App extends Component {
       welcome: { title: '좡\'s 좡좡좡', desc: '안녕? 나는 좡이야. 나는 초록색을 좋아해. 그리고 하던 일을 멈추고 다른 일을 하는 것을 좋아해. 왜냐면 나는 내가 시작한 일이 마무리 되는 것이 너무 슬퍼. 내가 하던 일과 영 영 이별하는 느낌이야... 그래서 엄마한테 매일 혼나지. "또 중간에 딴 짓 한다!!!!" 샤워를 하고 나와서 옷을 입지 않고 티비를 본다던가... 바지를 한 쪽 가랭이만 입고 책을 읽는 다던가... 나는 미련이 많고 원하는 걸 잘 이야기 하지 못 해. 그래도 나는 내가 좋은 사람이라는 걸 알아. 그래서 내가 좋아. 그리고 나는 커서 멋진 사람이 될꺼야. 어떤 일을 아주 미루다 마감에 맞춰 그 미뤘던 에너지를 폭발 시킬 수 있는 그런 직업을 찾을 거야. 그런데 그런 일은 아마... 굉장히...자... 아니.. 슬... 음... 아니 아니야.' }
     }
   }
-
-  render() {
-    var _mode = this.state.mode;
-    var _selected_content_id = this.state.selected_content_id;
-    var _selected_mail_id = this.state.selected_mail_id;
-    var _article = null;
+  getReadContent() {
+    var i = 0;
     var _contents = this.state.contents;
+    var _selected_content_id = this.state.selected_content_id;
+    while (i < _contents.length) {
+      var _data = this.state.contents[i];
+      if (_data.id === _selected_content_id) {
+        return _data;
+        break;
+      }
+      i= i + 1;
+    }
+  }
+
+  getContent() {
+    var _mode = this.state.mode;
+    var _selected_mail_id = this.state.selected_mail_id;
+    var _selected_content_id = this.state.selected_content_id;
+    var _article = null;
     var _mails = this.state.mails;
     if (_mode === 'welcome') {
       var _title = this.state.welcome.title;
       var _desc = this.state.welcome.desc;
       _article = <Welcome title={_title} desc={_desc}></Welcome>
     } else if (_mode === 'read') {
-      var i = 0;
-      while (i < _contents.length) {
-        var _data = this.state.contents[i];
-        if (_data.id === _selected_content_id) {
-          _article = <ReadContents data={_data}
-            PrevContent={function (id) {
-              if (id > 0) {
-                this.setState({ selected_content_id: id });
-              }
-            }.bind(this)}
-            NextContent={function (id) {
-              if (id < Number(this.max_content_id) + 1) {
-                this.setState({ selected_content_id: id })
-              }
-            }.bind(this)}
+      var _selected_data = this.getReadContent();
+      _article = <ReadContents data={_selected_data}
+        PrevContent={function (id) {
+          if (id > 0) {
+            this.setState({ selected_content_id: id });
+          }
+        }.bind(this)}
+        NextContent={function (id) {
+          if (id < Number(this.max_content_id) + 1) {
+            this.setState({ selected_content_id: id })
+          }
+        }.bind(this)}
 
-            onChangeMode={function (m) {
-              this.setState({ mode: m });
-            }.bind(this)}
-          ></ReadContents>
-          break;
-        } i = i + 1;
-      }
+        onChangeMode={function (m) {
+          this.setState({ mode: m });
+        }.bind(this)}
+
+        onDelete = {function(){
+          var _contents = Array.from(this.state.contents);
+          var i = 0;
+          while(i < _contents.length) {
+            if(_contents[i].id === this.state.selected_content_id) {
+              _contents.splice(i, 1) ;
+              this.setState({contents: _contents, mode: 'welcome'});
+            }i = i + 1;
+          }
+        }.bind(this)}
+      ></ReadContents>
     } else if (_mode === 'read-mail') {
       var n = 0;
       while (n < _mails.length) {
@@ -100,9 +117,9 @@ class App extends Component {
       _article =
         <CreateMails
           onSubmit={function (_title, _message) {
-            this.max_mail_id = this.max_mail_id+1;
+            this.max_mail_id = this.max_mail_id + 1;
             _mails = Array.from(this.state.mails);
-            _mails.push({ id:this.max_mail_id, title: _title, message: _message });
+            _mails.push({ id: this.max_mail_id, title: _title, message: _message });
             this.setState({ mails: _mails, mode: 'read-mail', selected_mail_id: this.max_mail_id });
           }.bind(this)}
           onCancel={function () {
@@ -110,17 +127,32 @@ class App extends Component {
           }.bind(this)}
         >
         </CreateMails>
-    } else if (_mode === 'update-story'){
-      var update_data = this.state.contents[Number(_selected_content_id-1)]
-      _article = 
-      <UpdateContents data={update_data}
-         onSubmit = {function(_id, _title, _story){
-          console.log(_id, _title, _story)
-         }}
-      >
+    } else if (_mode === 'update-story') {
+      var _update_data = this.getReadContent();
+      _article =
+        <UpdateContents data={_update_data}
+          onSubmit={function (_id, _title, _story) {
+            var _contents = Array.from(this.state.contents);
+            var i = 0;
+            while(i < _contents.length ) {
+              if(_contents[i].id === _update_data.id ){
+                _contents[i] = {id: Number(_id), title: _title, story: _story};
+                console.log(_contents[i]);
+                this.setState({ contents: _contents });
+                this.setState({ mode: 'read' });
+                break;
+              }
+              i = i + 1;
+            }
+          }.bind(this)}
+        >
 
-      </UpdateContents>
+        </UpdateContents>
     }
+    return _article;
+  }
+
+  render() {
     return (
       <div className="wrap">
         <navigator>
@@ -143,7 +175,7 @@ class App extends Component {
           ></TOCMail>
         </navigator>
         <main>
-          {_article}
+          {this.getContent()}
         </main>
       </div>
     );

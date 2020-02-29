@@ -20,13 +20,14 @@ class UpdateContents extends Component {
                 <form onSubmit={
                     function (e) {
                         e.preventDefault();
+                        debugger;
                         this.props.onSubmit(
                             e.target.id.value, 
                             e.target.title.value, 
                             e.target.story.value);
                     }.bind(this)}>
                     <section className="contents create">
-                        <input id={data.id} type="hidden"></input>
+                        <input name="id" value={data.id} type="hidden"></input>
                         <input name="title" type="text" value={this.state.title}
                             onChange={this.inputFormHandler.bind(this)}></input>
                         <textarea name="story" type="textarea" value={this.state.story}

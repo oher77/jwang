@@ -35,7 +35,10 @@ class ReadContents extends Component {
                 </div>
                 <section className="control">
                     <ul className="button-list">
-                        <a href="/"><li>삭제하기</li></a>
+                        <a href="/" onClick={function(e) {
+                            e.preventDefault();
+                            this.props.onDelete();
+                        }.bind(this)}><li>삭제하기</li></a>
                         <a href="/" onClick={function(e){
                             e.preventDefault();
                             this.props.onChangeMode('update-story');
