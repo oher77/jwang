@@ -1,5 +1,5 @@
 Blog for Kids!
-I made it for my daughter
+I made it for my daughter.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
